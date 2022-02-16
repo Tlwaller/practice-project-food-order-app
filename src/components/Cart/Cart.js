@@ -18,7 +18,9 @@ const Card = (props) => {
         <span>35.62</span>
       </div>
       <div className={classes.actions}>
-        <button className={classes["button--alt"]} onClick={props.onCartToggle}>Close</button>
+        <button className={classes["button--alt"]} onClick={props.onCartToggle}>
+          Close
+        </button>
         <button className={classes.button}>Order</button>
       </div>
     </Modal>
