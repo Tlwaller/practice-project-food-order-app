@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import Modal from "../UI/Modal";
 import classes from "./Cart.module.css";
-import CartContext from "../../store/cart-context";
+import CartContext from "../../store/Cart/cart-context";
 import CartItem from "./CartItem";
 
 const Card = (props) => {
@@ -12,7 +12,7 @@ const Card = (props) => {
   const hasItems = cartCtx.items.length > 0;
 
   const cartItemAddHandler = (item) => {
-    cartCtx.addItem({...item, amount: 1});
+    cartCtx.addItem({ ...item, amount: 1 });
   };
 
   const cartItemRemoveHandler = (id) => {

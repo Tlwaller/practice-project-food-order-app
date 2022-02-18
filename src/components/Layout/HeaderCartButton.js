@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 
-import CartContext from "../../store/cart-context";
+import CartContext from "../../store/Cart/cart-context";
 import CartIcon from "../Cart/CartIcon";
 import classes from "./HeaderCartButton.module.css";
 
@@ -22,6 +22,9 @@ const HeaderCartButton = (props) => {
     setBtnHighlight(true);
 
     const timer = setTimeout(() => setBtnHighlight(false), 300);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [items]);
 
   return (
