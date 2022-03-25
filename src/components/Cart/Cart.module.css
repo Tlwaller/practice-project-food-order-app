@@ -2,7 +2,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 30rem;
+  max-height: 22rem;
   overflow: auto;
   text-transform: capitalize;
 }
@@ -45,3 +45,10 @@
   background-color: #8a2b06;
   color: white;
 }
+/* 
+.cart-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:;
+} */

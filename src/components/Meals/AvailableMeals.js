@@ -1,43 +1,58 @@
+import { useState, useEffect } from "react";
 import classes from "./AvailableMeals.module.css";
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
 
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    desc: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    desc: "A German specialty",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    desc: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    desc: "Healthy...and green...",
-    price: 18.99,
-  },
-];
-
 const AvailableMeals = () => {
+  const [meals, setMeals] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(
+        "https://reactmeals-a3476-default-rtdb.firebaseio.com/Meals.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("ERROR O O P S :|");
+      }
+
+      const data = await response.json();
+
+      const loadedMeals = [];
+
+      for (const key in data) {
+        loadedMeals.push({
+          id: key,
+          name: data[key].name,
+          desc: data[key].desc,
+          price: data[key].price,
+        });
+      }
+      setMeals(loadedMeals);
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  }, []);
+
   return (
     <section className={classes.meals}>
       <Card>
-        <ul>
-          {DUMMY_MEALS.map((meal) => (
-            <MealItem key={meal.id} meal={meal} />
-          ))}
-        </ul>
+        {loading && <p style={{ color: "red" }}>Loading...</p>}
+        {error ? (
+          <p style={{ color: "red", "text-align": "center" }}>{error}</p>
+        ) : (
+          <ul>
+            {meals.map((meal) => (
+              <MealItem key={meal.id} meal={meal} />
+            ))}
+          </ul>
+        )}
       </Card>
     </section>
   );
