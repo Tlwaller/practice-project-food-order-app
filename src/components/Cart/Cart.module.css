@@ -45,10 +45,12 @@
   background-color: #8a2b06;
   color: white;
 }
-/* 
-.cart-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content:;
-} */
+
+.cart-form label {
+  font-weight: normal;
+}
+
+.cart-form p {
+  color: #ff4800;
+  margin-bottom: 0.5rem;
+}

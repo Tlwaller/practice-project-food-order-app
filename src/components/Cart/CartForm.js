@@ -1,8 +1,14 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Input from "../UI/Input";
 import classes from "./Cart.module.css";
 
 const CartForm = (props) => {
+  const [formValidity, setFormValidity] = useState({
+    name: true,
+    street: true,
+    zip: true,
+    city: true,
+  });
   const formRef = useRef();
   const nameInputRef = useRef();
   const streetInputRef = useRef();
@@ -13,6 +19,14 @@ const CartForm = (props) => {
     if (value.trim().length < num) {
       return false;
     } else return true;
+  };
+
+  const blurHandler = (e) => {
+    if (isValid(e.target.value, 1)) {
+      setFormValidity({ ...formValidity, [e.target.id]: true });
+    } else {
+      setFormValidity({ ...formValidity, [e.target.id]: false });
+    }
   };
 
   const submitHandler = (e) => {
@@ -28,11 +42,19 @@ const CartForm = (props) => {
     const zipIsValid = isValid(zip, 5);
     const cityIsValid = isValid(city, 1);
 
+    setFormValidity({
+      name: nameIsValid,
+      street: streetIsValid,
+      zip: zipIsValid,
+      city: cityIsValid,
+    });
+
     if (nameIsValid && streetIsValid && zipIsValid && cityIsValid) {
       alert(`Order shipping to ${name} at ${street} ${city}, ${zip}`);
       formRef.current.reset();
+      return;
     } else {
-      alert("Please review shipping info.");
+      return;
     }
   };
 
@@ -42,38 +64,31 @@ const CartForm = (props) => {
       onSubmit={submitHandler}
       ref={formRef}
     >
-      <Input
-        ref={nameInputRef}
-        label="Your Name:"
-        input={{
-          id: "name",
-          type: "text",
-        }}
-      />
-      <Input
-        ref={streetInputRef}
-        label="Your Street:"
-        input={{
-          id: "street",
-          type: "text",
-        }}
-      />
-      <Input
-        ref={zipInputRef}
-        label="Your Postal Code:"
-        input={{
-          id: "zip",
-          type: "text",
-        }}
-      />
-      <Input
-        ref={cityInputRef}
-        label="Your City:"
-        input={{
-          id: "city",
-          type: "text",
-        }}
-      />
+      <label>
+        Your Name:
+        <input id="name" type="text" ref={nameInputRef} onBlur={blurHandler} />
+        {!formValidity.name && <p>Please enter a valid name.</p>}
+      </label>
+      <label>
+        Your Street:
+        <input
+          id="street"
+          type="text"
+          ref={streetInputRef}
+          onBlur={blurHandler}
+        />
+        {!formValidity.street && <p>Please enter a valid street address.</p>}
+      </label>
+      <label>
+        Your Postal Code:
+        <input id="zip" type="text" ref={zipInputRef} onBlur={blurHandler} />
+        {!formValidity.zip && <p>Please enter a valid postal code.</p>}
+      </label>
+      <label>
+        Your City:
+        <input id="city" type="text" ref={cityInputRef} onBlur={blurHandler} />
+        {!formValidity.city && <p>Please enter a valid city.</p>}
+      </label>
       <div className={classes.actions}>
         <button className={classes["button--alt"]} onClick={props.formToggler}>
           Cancel
