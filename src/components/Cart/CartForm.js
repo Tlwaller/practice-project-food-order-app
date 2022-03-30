@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import Input from "../UI/Input";
 import classes from "./Cart.module.css";
 
 const CartForm = (props) => {
@@ -50,7 +49,7 @@ const CartForm = (props) => {
     });
 
     if (nameIsValid && streetIsValid && zipIsValid && cityIsValid) {
-      alert(`Order shipping to ${name} at ${street} ${city}, ${zip}`);
+      props.onConfirm({ name, street, zip, city });
       formRef.current.reset();
       return;
     } else {
